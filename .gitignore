@@ -27,6 +27,11 @@ htmlcov/
 .DS_Store
 Thumbs.db
 
-# Skripty vyučujícího
+# Skripty a reporty vyučujícího
 compare_branches.py
 branch_comparison.md
+check_pull_requests.py
+prehled_odevzdani*
+*.csv
+
+student_mapping.json

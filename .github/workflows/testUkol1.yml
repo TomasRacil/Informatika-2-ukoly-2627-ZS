@@ -1,14 +1,14 @@
-name: Python Ukol 0 Tests
+name: Python Ukol 1 Tests
 
 on:
   push:
     paths:
-      - 'Ukol_0/**'
-      - '.github/workflows/testUkol0.yml'
+      - 'Ukol_1/**'
+      - '.github/workflows/testUkol1.yml'
   pull_request:
     paths:
-      - 'Ukol_0/**'
-      - '.github/workflows/testUkol0.yml'
+      - 'Ukol_1/**'
+      - '.github/workflows/testUkol1.yml'
 
 jobs:
   python_test:
@@ -26,6 +26,6 @@ jobs:
       with:
         python-version: '3.11'
 
-    - name: Run Python test for Ukol 0
+    - name: Run Python test for Ukol 1
       run: |
-        cd Ukol_0 && python -m unittest test.py
+        cd Ukol_1 && python -m unittest test.py
