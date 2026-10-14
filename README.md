@@ -199,7 +199,8 @@ Až vyučující během semestru zveřejní nový úkol, váš fork v něm ješt
 | Složka | Název úkolu | Popis | Termín odevzdání | Stav |
 | :--- | :--- | :--- | :---: | :---: |
 | [**Ukol_0**](./Ukol_0/README.md) | **Hello World** | Ukázkový úkol pro seznámení s odevzdávacím systémem a testy | 2. 10. 2026 | Zadáno |
-| *Ukol_1* | *Bude doplněno* | *Zadání bude zveřejněno v průběhu semestru* | – | Připravuje se |
+| [**Ukol_1**](./Ukol_1/README.md) | **Základy: proměnné, podmínky a cykly** | Výpočet BMI, klasifikace hodnot, cyklus for a Collatzova posloupnost (while) | 9. 10. 2026 | Zadáno |
+| *Ukol_2* | *Bude doplněno* | *Zadání bude zveřejněno v průběhu semestru* | – | Připravuje se |
 
 ---
 
