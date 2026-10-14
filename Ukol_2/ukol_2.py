@@ -13,9 +13,11 @@ def extrahuj_hashtagy(text: str) -> set[str]:
     Pravidla:
     - Rozdělte text na slova podle bílých znaků (.split()).
     - Slovo je považováno za hashtag, pokud začíná znakem '#'.
-    - Odstraňte úvodní křížek '#' a z konce slova odstraňte případnou interpunkci (',', '.', '!', '?', ':', ';', '"').
+    - Odstraňte úvodní křížek '#' a z konce slova odstraňte případnou
+        interpunkci(',', '.', '!', '?', ':', ';', '"').
     - Převeďte název hashtagu na malá písmena.
-    - Pokud po očištění zůstane neprázdný řetězec, přidejte jej do výsledné množiny.
+    - Pokud po očištění zůstane neprázdný řetězec, přidejte jej do výsledné
+        množiny.
     - Vrátí množinu (set[str]) unikátních názvů hashtagů.
     - Pokud text neobsahuje žádný platný hashtag, vrátí prázdnou množinu set().
 
@@ -23,27 +25,46 @@ def extrahuj_hashtagy(text: str) -> set[str]:
         text = "Učíme se #Python a #datové_struktury! #python je #super."
         extrahuj_hashtagy(text) -> {"python", "datové_struktury", "super"}
     """
-    # TODO: Doplňte implementaci
-    return set()
+
+    words = text.split(" ")
+    result = []
+
+    for word in words:
+        if word.startswith("#"):
+            temp = word.strip('#,.!?:;"').lower()
+
+            if len(temp) > 0:
+                result.append(temp)
+
+    return set(result)
 
 
-def porovnej_zajmy(student_a: set[str], student_b: set[str]) -> tuple[set[str], set[str], set[str]]:
+def porovnej_zajmy(
+    student_a: set[str], student_b: set[str]
+) -> tuple[set[str], set[str], set[str]]:
     """
     Pomocí množinových operací porovná zájmy nebo dovednosti dvou studentů.
 
     Návratová hodnota:
     - n-tice (tuple) o 3 prvcích: (spolecne, pouze_a, pouze_b)
-      1. spolecne: množina prvků obsažených v obou množinách současně (průnik: A & B)
-      2. pouze_a: množina prvků obsažených pouze v množině student_a (rozdíl: A - B)
-      3. pouze_b: množina prvků obsažených pouze v množině student_b (rozdíl: B - A)
+      1. spolecne: množina prvků obsažených v obou množinách současně
+        (průnik: A & B)
+      2. pouze_a: množina prvků obsažených pouze v množině student_a
+        (rozdíl: A - B)
+      3. pouze_b: množina prvků obsažených pouze v množině student_b
+        (rozdíl: B - A)
 
     Příklad:
         a = {"python", "c++", "linux"}
         b = {"python", "sql", "git"}
         porovnej_zajmy(a, b) -> ({"python"}, {"c++", "linux"}, {"sql", "git"})
     """
-    # TODO: Doplňte implementaci
-    return (set(), set(), set())
+
+    return (
+        set(student_a.intersection(student_b)),
+        set(student_a.difference(student_b)),
+        set(student_b.difference(student_a)),
+    )
 
 
 def katalog_knih(knihy: list[tuple[str, str, int]]) -> dict[str, list[str]]:
@@ -51,12 +72,15 @@ def katalog_knih(knihy: list[tuple[str, str, int]]) -> dict[str, list[str]]:
     Seskupí knihy ze zadaného seznamu podle jejich žánru.
 
     Vstup:
-    - knihy: seznam n-tic, kde každá n-tice má formát (nazev_knihy, zanr, rok_vydani)
+    - knihy: seznam n-tic, kde každá n-tice má formát
+        (nazev_knihy, zanr, rok_vydani)
 
     Pravidla:
-    - Výsledkem je slovník (dict[str, list[str]]), kde klíčem je žánr (oříznutý o případné
-      bílé znaky na začátku a konci) a hodnotou je seznam názvů knih v tomto žánru.
-    - Pořadí knih v seznamu pro daný žánr musí odpovídat původnímu pořadí v předaném seznamu.
+    - Výsledkem je slovník (dict[str, list[str]]), kde klíčem je žánr
+        (oříznutý o případné bílé znaky na začátku a konci)
+        a hodnotou je seznam názvů knih v tomto žánru.
+    - Pořadí knih v seznamu pro daný žánr musí odpovídat původnímu pořadí
+        v předaném seznamu.
     - Pokud je předaný seznam prázdný, funkce vrátí prázdný slovník {}.
 
     Příklad:
@@ -65,10 +89,19 @@ def katalog_knih(knihy: list[tuple[str, str, int]]) -> dict[str, list[str]]:
             ("Pán prstenů", "Fantasy", 1954),
             ("Duna", "Sci-Fi", 1965)
         ]
-        katalog_knih(katalog) -> {"Sci-Fi": ["1984", "Duna"], "Fantasy": ["Pán prstenů"]}
+        katalog_knih(katalog) ->
+            {"Sci-Fi": ["1984", "Duna"], "Fantasy": ["Pán prstenů"]}
     """
-    # TODO: Doplňte implementaci
-    return {}
+
+    result = dict()
+
+    for book in knihy:
+        result.setdefault(book[1].strip(), [])
+
+    for book in knihy:
+        result[book[1].strip()].append(book[0].strip())
+
+    return result
 
 
 def statistika_textu(text: str) -> dict:
@@ -82,13 +115,16 @@ def statistika_textu(text: str) -> dict:
     4. Sestavte slovník s následujícími klíči:
        - "pocet_slov": celkový počet slov v textu (int)
        - "pocet_unikatnich": počet různých slov (int)
-       - "nejdelsi_slovo": nejdelší nalezené slovo (str). Pokud má více slov stejnou
-         maximální délku, vyberte první z nich. Pokud je text prázdný, hodnota je "".
-       - "cetnost_delek": slovník (dict[int, int]), kde klíčem je délka slova a hodnotou
+       - "nejdelsi_slovo": nejdelší nalezené slovo (str). Pokud má více slov
+         stejnou maximální délku, vyberte první z nich. Pokud je text prázdný,
+         hodnota je "".
+       - "cetnost_delek": slovník (dict[int, int]), kde klíčem je délka slova
+         a hodnotou
          je počet slov v textu s touto délkou.
 
-    Pro prázdný text (nebo text obsahující pouze bílé znaky a interpunkci) vrátí:
-       {"pocet_slov": 0, "pocet_unikatnich": 0, "nejdelsi_slovo": "", "cetnost_delek": {}}
+    Pro prázdný text (nebo text obsahující pouze bílé znaky a interpunkci)
+        vrátí: {"pocet_slov": 0, "pocet_unikatnich": 0,
+        "nejdelsi_slovo": "", "cetnost_delek": {}}
 
     Příklad:
         text = "Rychlá hnědá liška skáče přes líného psa."
@@ -100,18 +136,40 @@ def statistika_textu(text: str) -> dict:
             "cetnost_delek": {6: 2, 5: 3, 4: 1, 3: 1}
         }
     """
-    # TODO: Doplňte implementaci
+
+    stripped = text.strip().strip(" ,.!?:;")
+
+    if len(stripped) == 0:
+        return {
+            "pocet_slov": 0,
+            "pocet_unikatnich": 0,
+            "nejdelsi_slovo": "",
+            "cetnost_delek": {},
+        }
+
+    result = stripped.lower().split(' ')
+    longest_word = ""
+
+    for word in result:
+        if len(word) > len(longest_word):
+            longest_word = word
+
+    freq = {}
+
+    for word in result:
+        freq.update({len(word): freq.get(len(word), 0) + 1})
+
     return {
-        "pocet_slov": 0,
-        "pocet_unikatnich": 0,
-        "nejdelsi_slovo": "",
-        "cetnost_delek": {}
+        "pocet_slov": len(result),
+        "pocet_unikatnich": len(set(result)),
+        "nejdelsi_slovo": longest_word,
+        "cetnost_delek": freq,
     }
 
 
 def main():
     print("=== Testování funkcí Úkolu 2 ===")
-    
+
     text = "Učíme se #Python a #datové_struktury! #python je #super."
     tagy = extrahuj_hashtagy(text)
     print(f"1. Hashtagy: {tagy}")
@@ -125,7 +183,7 @@ def main():
         ("1984", "Sci-Fi", 1949),
         ("Pán prstenů", "Fantasy", 1954),
         ("Duna", "Sci-Fi", 1965),
-        ("Hobit", "Fantasy", 1937)
+        ("Hobit", "Fantasy", 1937),
     ]
     kat = katalog_knih(knihy)
     print(f"3. Katalog podle žánrů: {kat}")
