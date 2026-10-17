@@ -7,45 +7,38 @@ Neměňte názvy funkcí ani jejich parametry.
 
 
 def vypocet_bmi(vaha_kg: float, vyska_m: float) -> float:
-    """
-    Spočítá Body Mass Index (BMI) podle vzorce:
-        BMI = vaha_kg / (vyska_m ** 2)
-
-    Výsledek zaokrouhlete na 2 desetinná místa pomocí funkce round(..., 2).
-    Pokud je váha <= 0 nebo výška <= 0, vraťte 0.0.
-    """
     # TODO: Doplňte výpočet BMI se zaokrouhlením na 2 desetinná místa
-    return 0.0
+    if vaha_kg <=0 or vyska_m<=0:
+        return 0.0
+    else:
+        return round(vaha_kg/vyska_m**2,2)
 
 
 def kategorie_bmi(bmi: float) -> str:
-    """
-    Na základě hodnoty BMI určí váhovou kategorii:
-        - bmi < 18.5: "podvaha"
-        - 18.5 <= bmi < 25.0: "normalni"
-        - 25.0 <= bmi < 30.0: "nadvaha"
-        - bmi >= 30.0: "obezita"
-
-    Pokud je bmi <= 0, vraťte "neplatna hodnota".
-    """
     # TODO: Doplňte větvení if-elif-else
-    return ""
+    if bmi<=0 :
+        return "neplatna hodnota"
+    elif 18.5 <= bmi and bmi< 25.0:
+        return "normalni"
+    elif bmi<18.5:
+        return "podvaha"
+    elif 25.0 <= bmi and bmi < 30.0:
+        return "nadvaha"
+    elif bmi>=30.0:
+        return "obezita"
+    #nebo 
+    #else : return "obezita"
 
 
 def soucet_sudych(start: int, stop: int) -> int:
-    """
-    Pomocí cyklu for spočítá součet všech SUDÝCH celých čísel
-    v uzavřeném intervalu od start do stop (včetně obou mezí).
-
-    Příklady:
-        start = 1, stop = 6 -> sudá jsou 2, 4, 6 -> součet = 12
-        start = 2, stop = 2 -> sudé je 2 -> součet = 2
-        start = 5, stop = 5 -> žádné sudé -> součet = 0
-
-    Pokud je start > stop, vraťte 0.
-    """
     # TODO: Doplňte cyklus for s funkcí range()
-    return 0
+    sum=0
+    for i in range(start,stop+1):
+        if i%2==0:
+            sum+=i
+        elif start>stop: return 0
+    return sum
+
 
 
 def pocet_kroku_collatz(n: int) -> int:
@@ -62,7 +55,17 @@ def pocet_kroku_collatz(n: int) -> int:
         6 -> 3 -> 10 -> 5 -> 16 -> 8 -> 4 -> 2 -> 1 (celkem 8 kroků)
     """
     # TODO: Doplňte cyklus while a počítadlo kroků
-    return 0
+    pocet_kroku =0
+
+    if n<=1: return 0
+    while n!=1:
+        if n%2==0:
+            n= n//2
+        elif n%2!=0:
+            n = 3*n+1
+        pocet_kroku+=1
+    return pocet_kroku
+
 
 
 def main():
