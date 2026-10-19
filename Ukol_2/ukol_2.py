@@ -24,7 +24,18 @@ def extrahuj_hashtagy(text: str) -> set[str]:
         extrahuj_hashtagy(text) -> {"python", "datové_struktury", "super"}
     """
     # TODO: Doplňte implementaci
-    return set()
+    vysledek = set()
+    slova = text.split()
+    for slovo in slova:
+        if slovo.startswith("#"):
+            slovo_bez_krizku = slovo.lstrip("#")
+
+            ciste_slovo = slovo_bez_krizku.rstrip(',.!?:;"')
+            ciste_slovo = ciste_slovo.lower()
+
+            if ciste_slovo != "":
+                vysledek.add(ciste_slovo)
+    return vysledek
 
 
 def porovnej_zajmy(student_a: set[str], student_b: set[str]) -> tuple[set[str], set[str], set[str]]:
@@ -42,8 +53,13 @@ def porovnej_zajmy(student_a: set[str], student_b: set[str]) -> tuple[set[str], 
         b = {"python", "sql", "git"}
         porovnej_zajmy(a, b) -> ({"python"}, {"c++", "linux"}, {"sql", "git"})
     """
-    # TODO: Doplňte implementaci
-    return (set(), set(), set())
+    # TODO: Doplňte implementaci 
+
+    spolecne = student_a & student_b
+    pouze_a = student_a - student_b
+    pouze_b = student_b - student_a
+
+    return (spolecne, pouze_a, pouze_b)
 
 
 def katalog_knih(knihy: list[tuple[str, str, int]]) -> dict[str, list[str]]:
@@ -68,7 +84,13 @@ def katalog_knih(knihy: list[tuple[str, str, int]]) -> dict[str, list[str]]:
         katalog_knih(katalog) -> {"Sci-Fi": ["1984", "Duna"], "Fantasy": ["Pán prstenů"]}
     """
     # TODO: Doplňte implementaci
-    return {}
+    katalog = {}
+    for nazev, zanr, rok in knihy:
+        cisty_zanr = zanr.strip()
+        if cisty_zanr not in katalog:
+            katalog[cisty_zanr] = []
+        katalog[cisty_zanr].append(nazev)
+    return katalog
 
 
 def statistika_textu(text: str) -> dict:
@@ -101,12 +123,40 @@ def statistika_textu(text: str) -> dict:
         }
     """
     # TODO: Doplňte implementaci
-    return {
-        "pocet_slov": 0,
-        "pocet_unikatnich": 0,
-        "nejdelsi_slovo": "",
-        "cetnost_delek": {}
+    cisty_text = text.replace(",", "").replace(".", "").replace("!", "").replace("?", "").replace(":", "").replace(";", "")
+    cisty_text = cisty_text.lower()
+    slova = cisty_text.split()
+
+    if len(slova) == 0:
+        return {
+                "pocet_slov": 0,
+                "pocet_unikatnich": 0,
+                "nejdelsi_slovo": "",
+                "cetnost_delek": {}
+            }
+
+    unikatni_slova = set(slova)
+    cetnost_delek = {}
+    for slovo in slova:
+        delka = len(slovo)
+        if delka not in cetnost_delek:
+            cetnost_delek[delka] = 0
+        cetnost_delek[delka] = cetnost_delek[delka] + 1
+
+    nejdelsi_slovo = ""
+    for slovo in slova:
+        if len(slovo) > len(nejdelsi_slovo):
+            nejdelsi_slovo = slovo
+
+    slovnik = {
+        "pocet_slov" : len(slova),
+        "pocet_unikatnich" : len(unikatni_slova),
+        "nejdelsi_slovo" : nejdelsi_slovo,
+        "cetnost_delek" : cetnost_delek
     }
+
+
+    return slovnik
 
 
 def main():
