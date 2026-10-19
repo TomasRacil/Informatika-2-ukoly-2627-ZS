@@ -27,8 +27,10 @@ def extrahuj_hashtagy(text: str) -> set[str]:
     slova = text.split()
     for slovo in slova:
         if slovo.startswith("#"):
-            clear = slovo[1:].rstrip(',.!?:;"').lower()
-            hashtagy.add(clear)
+            clear = slovo.lstrip("#").rstrip(',.!?:;"').lower()
+
+            if clear:
+                hashtagy.add(clear)
     if hashtagy:
         return hashtagy
     
