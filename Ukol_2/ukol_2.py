@@ -24,7 +24,15 @@ def extrahuj_hashtagy(text: str) -> set[str]:
         extrahuj_hashtagy(text) -> {"python", "datové_struktury", "super"}
     """
     # TODO: Doplňte implementaci
-    return set()
+
+    vysledek = set()
+    slova = text.split()
+    for slovo in slova:
+        if slovo.startswith("#"):
+            ocistene = slovo.strip(',.!?;:"#').lower()
+            if ocistene:
+                vysledek.add(ocistene)
+    return vysledek
 
 
 def porovnej_zajmy(student_a: set[str], student_b: set[str]) -> tuple[set[str], set[str], set[str]]:
@@ -43,7 +51,10 @@ def porovnej_zajmy(student_a: set[str], student_b: set[str]) -> tuple[set[str], 
         porovnej_zajmy(a, b) -> ({"python"}, {"c++", "linux"}, {"sql", "git"})
     """
     # TODO: Doplňte implementaci
-    return (set(), set(), set())
+    spolecne = student_a & student_b
+    pouze_a = student_a - student_b
+    pouze_b = student_b - student_a
+    return (spolecne, pouze_a, pouze_b)
 
 
 def katalog_knih(knihy: list[tuple[str, str, int]]) -> dict[str, list[str]]:
@@ -68,7 +79,15 @@ def katalog_knih(knihy: list[tuple[str, str, int]]) -> dict[str, list[str]]:
         katalog_knih(katalog) -> {"Sci-Fi": ["1984", "Duna"], "Fantasy": ["Pán prstenů"]}
     """
     # TODO: Doplňte implementaci
-    return {}
+    katalog = {}
+    for nazev, zanr, rok in knihy:
+        zanr_ocisteny = zanr.strip()
+        if zanr_ocisteny not in katalog: 
+            katalog[zanr_ocisteny] = []
+
+        katalog[zanr_ocisteny].append(nazev)
+        
+    return katalog
 
 
 def statistika_textu(text: str) -> dict:
@@ -101,13 +120,28 @@ def statistika_textu(text: str) -> dict:
         }
     """
     # TODO: Doplňte implementaci
-    return {
+    text = text.lower()
+
+    for znak in [",", ".", "!", "?", ":", ";"]:
+        text = text.replace(znak,"")
+    slova = text.split()
+    if not slova:
+        return {
         "pocet_slov": 0,
         "pocet_unikatnich": 0,
         "nejdelsi_slovo": "",
         "cetnost_delek": {}
-    }
-
+        }
+    cetnosti={}
+    for slovo in slova:
+        delka = len(slovo)
+        cetnosti[delka] = cetnosti.get(delka,0)+1
+    return {
+        "pocet_slov": len(slova),
+        "pocet_unikatnich": len(set(slova)),
+        "nejdelsi_slovo": max(slova, key=len),
+        "cetnost_delek": cetnosti
+        }
 
 def main():
     print("=== Testování funkcí Úkolu 2 ===")
