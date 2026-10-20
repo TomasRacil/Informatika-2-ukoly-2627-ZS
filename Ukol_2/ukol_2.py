@@ -24,7 +24,15 @@ def extrahuj_hashtagy(text: str) -> set[str]:
         extrahuj_hashtagy(text) -> {"python", "datové_struktury", "super"}
     """
     # TODO: Doplňte implementaci
-    return set()
+    slova = text.split()
+    result = []
+    for slovo in slova:
+        if(slovo.startswith("#")):
+            temp = slovo.lower().strip('#!,.?:;" ')
+            if len(temp) > 0:
+                result.append(temp)
+    
+    return set(result)
 
 
 def porovnej_zajmy(student_a: set[str], student_b: set[str]) -> tuple[set[str], set[str], set[str]]:
@@ -43,7 +51,7 @@ def porovnej_zajmy(student_a: set[str], student_b: set[str]) -> tuple[set[str], 
         porovnej_zajmy(a, b) -> ({"python"}, {"c++", "linux"}, {"sql", "git"})
     """
     # TODO: Doplňte implementaci
-    return (set(), set(), set())
+    return (set(student_a.intersection(student_b)), set(student_a.difference(student_b)), set(student_b.difference(student_a)))
 
 
 def katalog_knih(knihy: list[tuple[str, str, int]]) -> dict[str, list[str]]:
@@ -68,7 +76,14 @@ def katalog_knih(knihy: list[tuple[str, str, int]]) -> dict[str, list[str]]:
         katalog_knih(katalog) -> {"Sci-Fi": ["1984", "Duna"], "Fantasy": ["Pán prstenů"]}
     """
     # TODO: Doplňte implementaci
-    return {}
+    slovnik = dict()
+
+    for kniha in knihy:
+        slovnik.setdefault(kniha[1].strip(), [])
+
+    for kniha in knihy:
+        slovnik[kniha[1].strip()].append(kniha[0].strip())
+    return slovnik
 
 
 def statistika_textu(text: str) -> dict:
@@ -101,11 +116,29 @@ def statistika_textu(text: str) -> dict:
         }
     """
     # TODO: Doplňte implementaci
+    text = text.lower().strip('#!,.?:;" ').split()
+    cetnost_delek = dict()
+    if len(text) == 0:
+        return {
+            "pocet_slov": 0,
+            "pocet_unikatnich": 0,
+            "nejdelsi_slovo": "",
+            "cetnost_delek": {}
+        }
+
+    nejdelsi_slovo = ""
+
+    for slovo in text:
+        if len(slovo) > len(nejdelsi_slovo):
+            nejdelsi_slovo = slovo
+
+    for slovo in text:
+        cetnost_delek.update({len(slovo): cetnost_delek.get(len(slovo), 0) + 1})
     return {
-        "pocet_slov": 0,
-        "pocet_unikatnich": 0,
-        "nejdelsi_slovo": "",
-        "cetnost_delek": {}
+        "pocet_slov": len(text),
+        "pocet_unikatnich": len(set(text)),
+        "nejdelsi_slovo": nejdelsi_slovo,
+        "cetnost_delek": cetnost_delek
     }
 
 
