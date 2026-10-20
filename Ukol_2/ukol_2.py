@@ -24,7 +24,19 @@ def extrahuj_hashtagy(text: str) -> set[str]:
         extrahuj_hashtagy(text) -> {"python", "datové_struktury", "super"}
     """
     # TODO: Doplňte implementaci
-    return set()
+    vysledek = set()
+    interpunkce = ',.!?;:"'
+
+    for slovo in text.split():
+        if slovo.startswith("#"):
+            ciste = slovo.removeprefix("#")
+            ciste = ciste.rstrip(interpunkce)
+            ciste = ciste.lstrip("#")
+            ciste = ciste.lower()
+            if ciste:
+                vysledek.add(ciste)
+
+    return vysledek
 
 
 def porovnej_zajmy(student_a: set[str], student_b: set[str]) -> tuple[set[str], set[str], set[str]]:
@@ -43,7 +55,7 @@ def porovnej_zajmy(student_a: set[str], student_b: set[str]) -> tuple[set[str], 
         porovnej_zajmy(a, b) -> ({"python"}, {"c++", "linux"}, {"sql", "git"})
     """
     # TODO: Doplňte implementaci
-    return (set(), set(), set())
+    return (student_a & student_b, student_a - student_b, student_b - student_a)
 
 
 def katalog_knih(knihy: list[tuple[str, str, int]]) -> dict[str, list[str]]:
@@ -68,7 +80,11 @@ def katalog_knih(knihy: list[tuple[str, str, int]]) -> dict[str, list[str]]:
         katalog_knih(katalog) -> {"Sci-Fi": ["1984", "Duna"], "Fantasy": ["Pán prstenů"]}
     """
     # TODO: Doplňte implementaci
-    return {}
+    vysledek = {}
+    for nazev, zanr, _ in knihy:
+        cisty_zanr = zanr.strip()
+        vysledek.setdefault(cisty_zanr, []).append(nazev)
+    return vysledek
 
 
 def statistika_textu(text: str) -> dict:
@@ -101,11 +117,26 @@ def statistika_textu(text: str) -> dict:
         }
     """
     # TODO: Doplňte implementaci
+    text = text.lower()
+    for znak in ",.!?::;":
+        text = text.replace(znak, "")
+    slova = text.split()
+    if not slova:
+        return {
+            "pocet_slov": 0,
+            "pocet_unikatnich": 0,
+            "nejdelsi_slovo": "",
+            "cetnost_delek": {}
+        }
+    cetnost_delek = {}
+    for slovo in slova:
+        delka = len(slovo)
+        cetnost_delek[delka] = cetnost_delek.get(delka, 0) + 1
     return {
-        "pocet_slov": 0,
-        "pocet_unikatnich": 0,
-        "nejdelsi_slovo": "",
-        "cetnost_delek": {}
+        "pocet_slov": len(slova),
+        "pocet_unikatnich": len(set(slova)),
+        "nejdelsi_slovo": max(slova, key=len),
+        "cetnost_delek": cetnost_delek
     }
 
 
