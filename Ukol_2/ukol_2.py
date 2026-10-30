@@ -23,8 +23,18 @@ def extrahuj_hashtagy(text: str) -> set[str]:
         text = "Učíme se #Python a #datové_struktury! #python je #super."
         extrahuj_hashtagy(text) -> {"python", "datové_struktury", "super"}
     """
-    # TODO: Doplňte implementaci
-    return set()
+    
+    vysledek = set()
+    slova = text.split()
+    
+    for slovo in slova:
+        if slovo.startswith('#'):
+            # Použití lstrip spolehlivě odstraní i vícenásobné křížky typu "##"
+            ocistene = slovo.lstrip('#').rstrip(',.!?:;"').lower()
+            if ocistene:
+                vysledek.add(ocistene)
+
+    return vysledek
 
 
 def porovnej_zajmy(student_a: set[str], student_b: set[str]) -> tuple[set[str], set[str], set[str]]:
@@ -42,8 +52,12 @@ def porovnej_zajmy(student_a: set[str], student_b: set[str]) -> tuple[set[str], 
         b = {"python", "sql", "git"}
         porovnej_zajmy(a, b) -> ({"python"}, {"c++", "linux"}, {"sql", "git"})
     """
-    # TODO: Doplňte implementaci
-    return (set(), set(), set())
+    spolecne = student_a & student_b
+    pouze_a = student_a - student_b
+    pouze_b = student_b - student_a
+    
+    return (spolecne, pouze_a, pouze_b)
+    
 
 
 def katalog_knih(knihy: list[tuple[str, str, int]]) -> dict[str, list[str]]:
@@ -67,8 +81,18 @@ def katalog_knih(knihy: list[tuple[str, str, int]]) -> dict[str, list[str]]:
         ]
         katalog_knih(katalog) -> {"Sci-Fi": ["1984", "Duna"], "Fantasy": ["Pán prstenů"]}
     """
-    # TODO: Doplňte implementaci
-    return {}
+    katalog = {}
+    
+    for nazev, zanr, rok in knihy:
+        zanr_cisty = zanr.strip()
+        
+        if zanr_cisty not in katalog:
+            katalog[zanr_cisty] = []
+            
+        katalog[zanr_cisty].append(nazev)
+        
+    return katalog
+    
 
 
 def statistika_textu(text: str) -> dict:
@@ -100,12 +124,44 @@ def statistika_textu(text: str) -> dict:
             "cetnost_delek": {6: 2, 5: 3, 4: 1, 3: 1}
         }
     """
-    # TODO: Doplňte implementaci
+    text_maly = text.lower()
+    
+    interpunkce = [',', '.', '!', '?', ':', ';']
+    for znak in interpunkce:
+        text_maly = text_maly.replace(znak, "")
+        
+    slova = text_maly.split()
+    
+    if not slova:
+        return {
+            "pocet_slov": 0,
+            "pocet_unikatnich": 0,
+            "nejdelsi_slovo": "",
+            "cetnost_delek": {}
+        }
+        
+    pocet_slov = len(slova)
+    pocet_unikatnich = len(set(slova))
+    
+    nejdelsi_slovo = slova[0]
+    cetnost_delek = {}
+    
+    for slovo in slova:
+        delka = len(slovo)
+        
+        if delka > len(nejdelsi_slovo):
+            nejdelsi_slovo = slovo
+            
+        if delka in cetnost_delek:
+            cetnost_delek[delka] += 1
+        else:
+            cetnost_delek[delka] = 1
+            
     return {
-        "pocet_slov": 0,
-        "pocet_unikatnich": 0,
-        "nejdelsi_slovo": "",
-        "cetnost_delek": {}
+        "pocet_slov": pocet_slov,
+        "pocet_unikatnich": pocet_unikatnich,
+        "nejdelsi_slovo": nejdelsi_slovo,
+        "cetnost_delek": cetnost_delek
     }
 
 

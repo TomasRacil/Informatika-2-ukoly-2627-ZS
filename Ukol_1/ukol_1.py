@@ -4,7 +4,7 @@
 Vyplňte těla jednotlivých funkcí podle zadání v komentářích a v README.md.
 Neměňte názvy funkcí ani jejich parametry.
 """
-
+#finalin verze
 
 def vypocet_bmi(vaha_kg: float, vyska_m: float) -> float:
     """
@@ -14,8 +14,13 @@ def vypocet_bmi(vaha_kg: float, vyska_m: float) -> float:
     Výsledek zaokrouhlete na 2 desetinná místa pomocí funkce round(..., 2).
     Pokud je váha <= 0 nebo výška <= 0, vraťte 0.0.
     """
-    # TODO: Doplňte výpočet BMI se zaokrouhlením na 2 desetinná místa
-    return 0.0
+    BMI = 0.0
+    if vaha_kg <= 0 or vyska_m <= 0:
+        return 0.0
+    BMI = vaha_kg / (vyska_m ** 2)
+    
+    vysledek = round(BMI, 2)
+    return vysledek
 
 
 def kategorie_bmi(bmi: float) -> str:
@@ -28,8 +33,17 @@ def kategorie_bmi(bmi: float) -> str:
 
     Pokud je bmi <= 0, vraťte "neplatna hodnota".
     """
-    # TODO: Doplňte větvení if-elif-else
-    return ""
+    if bmi <= 0:
+        return "neplatna hodnota"
+    elif bmi < 18.5:
+        return "podvaha"
+    elif bmi < 25.0:
+        return "normalni"
+    elif bmi < 30.0:
+        return "nadvaha"
+    else:
+        return "obezita"
+
 
 
 def soucet_sudych(start: int, stop: int) -> int:
@@ -44,8 +58,16 @@ def soucet_sudych(start: int, stop: int) -> int:
 
     Pokud je start > stop, vraťte 0.
     """
-    # TODO: Doplňte cyklus for s funkcí range()
-    return 0
+    
+    soucet = 0
+    if start > stop:
+        return 0
+        
+    for i in range(start, stop +1):
+        if i %2 == 0:    
+            soucet += i
+
+    return soucet
 
 
 def pocet_kroku_collatz(n: int) -> int:
@@ -61,9 +83,18 @@ def pocet_kroku_collatz(n: int) -> int:
     Příklad pro n = 6:
         6 -> 3 -> 10 -> 5 -> 16 -> 8 -> 4 -> 2 -> 1 (celkem 8 kroků)
     """
-    # TODO: Doplňte cyklus while a počítadlo kroků
-    return 0
-
+    
+    if n <= 1:
+        return 0
+    kroku = 0
+    while n != 1:
+        if n %2 == 0:
+            n = n//2
+            kroku+=1
+        else:
+            n = 3*n + 1
+            kroku+=1
+    return kroku
 
 def main():
     print("=== Testování funkcí Úkolu 1 ===")
