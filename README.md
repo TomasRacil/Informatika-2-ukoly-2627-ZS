@@ -201,7 +201,8 @@ Až vyučující během semestru zveřejní nový úkol, váš fork v něm ješt
 | [**Ukol_0**](./Ukol_0/README.md) | **Hello World** | Ukázkový úkol pro seznámení s odevzdávacím systémem a testy | 2. 10. 2026 | Zadáno |
 | [**Ukol_1**](./Ukol_1/README.md) | **Základy: proměnné, podmínky a cykly** | Výpočet BMI, klasifikace hodnot, cyklus for a Collatzova posloupnost (while) | 9. 10. 2026 | Zadáno |
 | [**Ukol_2**](./Ukol_2/README.md) | **Datové struktury: řetězce, množiny, n-tice a slovníky** | Extrakce hashtagů, množinové operace nad zájmy, katalog knih a souhrnná statistika textu | 20. 10. 2026 | Zadáno |
-| *Ukol_3* | *Bude doplněno* | *Zadání bude zveřejněno v průběhu semestru* | – | Připravuje se |
+| [**Ukol_3**](./Ukol_3/README.md) | **OOP: třídy, typové anotace a vlastnosti** | Zapouzdření, gettery/settery (@property), validace a metody (Kniha, PolozkaSkladu, Student) | 3. 11. 2026 | Zadáno |
+| *Ukol_4* | *Bude doplněno* | *Zadání bude zveřejněno v průběhu semestru* | – | Připravuje se |
 
 ---
 
