@@ -18,10 +18,16 @@ class Kniha:
     """
 
     def __init__(self, nazev: str, autor: str, pocet_stran: int, cena: float) -> None:
+
         self._nazev: str = ""
         self._autor: str = ""
         self._pocet_stran: int = 1
         self._cena: float = 0.0
+
+        self.nazev = nazev
+        self.autor = autor
+        self.pocet_stran = pocet_stran
+        self.cena = cena
 
         # TODO: Inicializujte atributy přes property settery pro zajištění validace
         pass
@@ -32,10 +38,10 @@ class Kniha:
         return self._nazev
 
     @nazev.setter
-    def nazev(self, hodnota: str) -> None:
-        # TODO: Ověřte, že hodnota je neprázdný řetězec po oříznutí mezer (.strip()).
-        # Pokud je prázdný, vyvolejte ValueError("Název nesmí být prázdný.")
-        pass
+    def nazev(self, novy_nazev: str) -> None:
+        if not novy_nazev.strip():
+            raise ValueError("Název nesmí být prázdný.")
+        self._nazev = novy_nazev.strip()
 
     @property
     def autor(self) -> str:
@@ -43,10 +49,10 @@ class Kniha:
         return self._autor
 
     @autor.setter
-    def autor(self, hodnota: str) -> None:
-        # TODO: Ověřte, že hodnota je neprázdný řetězec po oříznutí mezer (.strip()).
-        # Pokud je prázdný, vyvolejte ValueError("Autor nesmí být prázdný.")
-        pass
+    def autor(self, novy_autor: str) -> None:
+        if not novy_autor.strip():
+            raise ValueError("Autor nesmí být prázdný.")
+        self._autor = novy_autor.strip()
 
     @property
     def pocet_stran(self) -> int:
@@ -55,9 +61,9 @@ class Kniha:
 
     @pocet_stran.setter
     def pocet_stran(self, hodnota: int) -> None:
-        # TODO: Ověřte, že hodnota je > 0.
-        # Pokud ne, vyvolejte ValueError("Počet stran musí být kladné číslo.")
-        pass
+        if hodnota <= 0:
+            raise ValueError("Počet stran musí být kladné číslo.")
+        self._pocet_stran = hodnota
 
     @property
     def cena(self) -> float:
@@ -66,26 +72,17 @@ class Kniha:
 
     @cena.setter
     def cena(self, hodnota: float) -> None:
-        # TODO: Ověřte, že hodnota je >= 0.
-        # Pokud ne, vyvolejte ValueError("Cena nesmí být záporná.")
-        pass
+        if hodnota < 0:
+            raise ValueError("Cena nesmí být záporná.")
+        self._cena = hodnota
 
     def sleva(self, procento: float) -> None:
-        """
-        Sníží cenu knihy o zadané procento (0 až 100).
-        Výslednou cenu zaokrouhlete na 2 desetinná místa pomocí round(..., 2).
-        Pokud procento není v rozsahu 0 až 100, vyvolejte ValueError("Sleva musí být v rozmezí 0 až 100 %.").
-        """
-        # TODO: Doplňte implementaci
-        pass
+        if procento < 0 or procento > 100:
+            raise ValueError("Sleva musí být v rozmezí 0 až 100 %.")
+
+        self._cena = round(self._cena * (1 - procento / 100), 2)
 
     def __str__(self) -> str:
-        """
-        Vrátí textovou reprezentaci ve formátu:
-        "{nazev} ({autor}) - {pocet_stran} str., {cena} Kč"
-        Například: "1984 (George Orwell) - 328 str., 299.0 Kč"
-        """
-        # TODO: Doplňte implementaci
         return f"{self._nazev} ({self._autor}) - {self._pocet_stran} str., {self._cena} Kč"
 
 
@@ -106,12 +103,13 @@ class PolozkaSkladu:
         self._cena_za_kus: float = 0.0
         self._pocet_kusu: int = 0
 
-        # TODO: Inicializujte atributy přes settery s validací
-        pass
+        self.nazev = nazev
+        self.cena_za_kus = cena_za_kus
+        self.pocet_kusu = pocet_kusu
+
 
     @property
     def kod(self) -> str:
-        """Vrátí kód položky (pouze pro čtení)."""
         return self._kod
 
     @property
@@ -120,9 +118,9 @@ class PolozkaSkladu:
 
     @nazev.setter
     def nazev(self, hodnota: str) -> None:
-        # TODO: Ověřte, že hodnota je neprázdný řetězec po oříznutí mezer.
-        # Pokud je prázdný, vyvolejte ValueError("Název nesmí být prázdný.")
-        pass
+        if not hodnota.strip():
+            raise ValueError("Název nesmí být prázdný.")
+        self._nazev = hodnota
 
     @property
     def cena_za_kus(self) -> float:
@@ -130,9 +128,9 @@ class PolozkaSkladu:
 
     @cena_za_kus.setter
     def cena_za_kus(self, hodnota: float) -> None:
-        # TODO: Ověřte, že cena je >= 0.
-        # Pokud ne, vyvolejte ValueError("Cena za kus nesmí být záporná.")
-        pass
+        if hodnota < 0:
+            raise ValueError("Cena za kus nesmí být záporná.")
+        self._cena_za_kus = hodnota
 
     @property
     def pocet_kusu(self) -> int:
@@ -140,37 +138,29 @@ class PolozkaSkladu:
 
     @pocet_kusu.setter
     def pocet_kusu(self, hodnota: int) -> None:
-        # TODO: Ověřte, že počet kusů je >= 0.
-        # Pokud ne, vyvolejte ValueError("Počet kusů nesmí být záporný.")
-        pass
+        if hodnota < 0:
+            raise ValueError("Počet kusů nesmí být záporný.")
+        self._pocet_kusu = hodnota
 
     @property
     def hodnota_zasob(self) -> float:
-        """
-        Vypočítaná vlastnost (pouze pro čtení): celková cena všech kusů na skladě (cena_za_kus * pocet_kusu).
-        Zaokrouhlete na 2 desetinná místa.
-        """
-        # TODO: Doplňte výpočet
-        return 0.0
+        return round(self._cena_za_kus * self._pocet_kusu, 2)
 
     def prijem(self, pocet: int) -> None:
-        """
-        Přičte zadaný počet kusů na sklad.
-        Pokud je pocet <= 0, vyvolejte ValueError("Počet kusů pro příjem musí být kladný.").
-        """
-        # TODO: Doplňte implementaci
-        pass
+        if pocet <= 0:
+            raise ValueError("Počet kusů pro příjem musí být kladný.")
+
+        self._pocet_kusu += pocet
 
     def vydej(self, pocet: int) -> bool:
-        """
-        Odečte zadaný počet kusů ze skladu, pokud je jich dostatek.
-        Pokud je pocet <= 0, vyvolejte ValueError("Počet kusů pro výdej musí být kladný.").
-        Pokud je na skladě dostatek kusů, odečte je a vrátí True.
-        Pokud dostatek kusů není, počet kusů se nezmění a metoda vrátí False.
-        """
-        # TODO: Doplňte implementaci
-        return False
+        if pocet <= 0:
+            raise ValueError("Počet kusů pro výdej musí být kladný.")
 
+        if self._pocet_kusu >= pocet:
+            self._pocet_kusu -= pocet
+            return True
+
+        return False
 
 class Student:
     """
@@ -187,8 +177,10 @@ class Student:
         self._rocnik: int = 1
         self._znamky: list[int] = []
 
-        # TODO: Inicializujte jmeno a rocnik přes property settery
-        pass
+        self.jmeno = jmeno
+        self.rocnik = rocnik
+
+        
 
     @property
     def jmeno(self) -> str:
@@ -196,9 +188,9 @@ class Student:
 
     @jmeno.setter
     def jmeno(self, hodnota: str) -> None:
-        # TODO: Ověřte, že jméno je neprázdný řetězec po oříznutí mezer.
-        # Pokud je prázdný, vyvolejte ValueError("Jméno studenta nesmí být prázdné.")
-        pass
+        if not hodnota.strip():
+            raise ValueError("Jméno studenta nesmí být prázdné.")
+        self._jmeno = hodnota.strip()
 
     @property
     def rocnik(self) -> int:
@@ -206,44 +198,33 @@ class Student:
 
     @rocnik.setter
     def rocnik(self, hodnota: int) -> None:
-        # TODO: Ověřte, že ročník je v rozsahu 1 až 5 (včetně).
-        # Pokud ne, vyvolejte ValueError("Neplatný ročník (povolené hodnoty 1-5).")
-        pass
+        if hodnota < 1 or hodnota > 5:
+            raise ValueError("Neplatný ročník (povolené hodnoty 1-5).")
+        self._rocnik = hodnota
 
     @property
     def znamky(self) -> list[int]:
-        """
-        Vrátí kopii seznamu známek (aby vnější kód nemohl přímo měnit vnitřní seznam).
-        """
-        # TODO: Vraťte kopii self._znamky
+
         return list(self._znamky)
 
     def pridej_znamku(self, znamka: int) -> None:
-        """
-        Přidá novou známku do seznamu studenta.
-        Známka musí být celé číslo v rozsahu 1 až 5.
-        Pokud hodnota není v rozsahu 1 až 5, vyvolejte ValueError("Známka musí být v rozsahu 1 až 5.").
-        """
-        # TODO: Doplňte validaci a přidání známky
-        pass
+        if znamka < 1 or znamka > 5:
+            raise ValueError("Známka musí být v rozsahu 1 až 5.")
+        self._znamky.append(znamka)
 
     @property
     def prumer(self) -> float:
-        """
-        Vypočítaná vlastnost: aritmetický průměr všech známek zaokrouhlený na 2 desetinná místa.
-        Pokud student nemá žádné známky, vrátí 0.0.
-        """
-        # TODO: Doplňte výpočet průměru
-        return 0.0
+        if len(self._znamky) == 0:
+            return 0.0
+
+        return round(sum(self._znamky) / len(self._znamky), 2)
 
     @property
     def prospel(self) -> bool:
-        """
-        Vypočítaná vlastnost:
-        - Pokud student nemá žádné známky, vrátí True.
-        - Pokud má alespoň jednu známku 5, vrátí False.
-        - Pokud je jeho průměr <= 3.0 (a nemá 5), vrátí True.
-        - Jinak (průměr > 3.0) vrátí False.
-        """
-        # TODO: Doplňte logiku prospěchu
-        return True
+        if len(self._znamky) == 0:
+            return True
+
+        if 5 in self._znamky:
+            return False
+
+        return self.prumer <= 3.0
