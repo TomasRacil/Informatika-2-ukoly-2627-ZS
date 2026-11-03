@@ -1,11 +1,3 @@
-"""
-Úkol 3: Objektově orientované programování – třídy, typové anotace a vlastnosti.
-
-Vyplňte těla jednotlivých tříd a metod podle zadání v komentářích a v README.md.
-Neměňte názvy tříd, metod ani jejich parametrů.
-"""
-
-
 class Kniha:
     """
     Třída reprezentující knihu.
@@ -23,7 +15,6 @@ class Kniha:
         self._pocet_stran: int = 1
         self._cena: float = 0.0
 
-        # TODO: 
         self.nazev = nazev
         self.autor = autor
         self.pocet_stran = pocet_stran
@@ -31,7 +22,6 @@ class Kniha:
 
     @property
     def nazev(self) -> str:
-        # TODO: Doplňte getter
         return self._nazev
 
     @nazev.setter
@@ -42,7 +32,6 @@ class Kniha:
 
     @property
     def autor(self) -> str:
-        # TODO: Doplňte getter
         return self._autor
 
     @autor.setter
@@ -53,7 +42,6 @@ class Kniha:
 
     @property
     def pocet_stran(self) -> int:
-        # TODO: Doplňte getter
         return self._pocet_stran
 
     @pocet_stran.setter
@@ -64,7 +52,6 @@ class Kniha:
 
     @property
     def cena(self) -> float:
-        # TODO: Doplňte getter
         return self._cena
 
     @cena.setter
@@ -79,10 +66,10 @@ class Kniha:
         Výslednou cenu zaokrouhlete na 2 desetinná místa pomocí round(..., 2).
         Pokud procento není v rozsahu 0 až 100, vyvolejte ValueError("Sleva musí být v rozmezí 0 až 100 %.").
         """
-        # TODO:
         if not (0 <= procento <= 100):
             raise ValueError("Sleva musí být v rozmezí 0 až 100 %.")
-        self.cena = round(self._cena * (1 - procento / 100), 2)
+        nova_cena = self._cena * (1 - procento / 100)
+        self._cena = round(nova_cena, 2)
 
     def __str__(self) -> str:
         """
@@ -90,7 +77,6 @@ class Kniha:
         "{nazev} ({autor}) - {pocet_stran} str., {cena} Kč"
         Například: "1984 (George Orwell) - 328 str., 299.0 Kč"
         """
-        # TODO: Doplňte implementaci
         return f"{self._nazev} ({self._autor}) - {self._pocet_stran} str., {self._cena} Kč"
 
 
@@ -111,7 +97,6 @@ class PolozkaSkladu:
         self._cena_za_kus: float = 0.0
         self._pocet_kusu: int = 0
 
-        # TODO: Inicializujte atributy přes settery s validací
         self.nazev = nazev
         self.cena_za_kus = cena_za_kus
         self.pocet_kusu = pocet_kusu
@@ -157,21 +142,31 @@ class PolozkaSkladu:
         Vypočítaná vlastnost (pouze pro čtení): celková cena všech kusů na skladě (cena_za_kus * pocet_kusu).
         Zaokrouhlete na 2 desetinná místa.
         """
-        # TODO: Doplňte výpočet
         return round(self._cena_za_kus * self._pocet_kusu, 2)
 
     def prijem(self, pocet: int) -> None:
+        """
+        Přičte zadaný počet kusů na sklad.
+        Pokud je pocet <= 0, vyvolejte ValueError("Počet kusů pro příjem musí být kladný.").
+        """
         if pocet <= 0:
             raise ValueError("Počet kusů pro příjem musí být kladný.")
-        self.pocet_kusu += pocet
+        self._pocet_kusu += pocet
 
     def vydej(self, pocet: int) -> bool:
+        """
+        Odečte zadaný počet kusů ze skladu, pokud je jich dostatek.
+        Pokud je pocet <= 0, vyvolejte ValueError("Počet kusů pro výdej musí být kladný.").
+        Pokud je na skladě dostatek kusů, odečte je a vrátí True.
+        Pokud dostatek kusů není, počet kusů se nezmění a metoda vrátí False.
+        """
         if pocet <= 0:
             raise ValueError("Počet kusů pro výdej musí být kladný.")
         if self._pocet_kusu >= pocet:
-            self.pocet_kusu -= pocet
+            self._pocet_kusu -= pocet
             return True
         return False
+
 
 class Student:
     """
@@ -188,7 +183,6 @@ class Student:
         self._rocnik: int = 1
         self._znamky: list[int] = []
 
-        # TODO: Inicializujte jmeno a rocnik přes property settery
         self.jmeno = jmeno
         self.rocnik = rocnik
 
@@ -217,7 +211,6 @@ class Student:
         """
         Vrátí kopii seznamu známek (aby vnější kód nemohl přímo měnit vnitřní seznam).
         """
-        # TODO: Vraťte kopii self._znamky
         return list(self._znamky)
 
     def pridej_znamku(self, znamka: int) -> None:
@@ -226,8 +219,7 @@ class Student:
         Známka musí být celé číslo v rozsahu 1 až 5.
         Pokud hodnota není v rozsahu 1 až 5, vyvolejte ValueError("Známka musí být v rozsahu 1 až 5.").
         """
-        # TODO: Doplňte validaci a přidání známky
-        if not isinstance(znamka, int) or not (1 <= znamka <= 5):
+        if not (isinstance(znamka, int) and 1 <= znamka <= 5):
             raise ValueError("Známka musí být v rozsahu 1 až 5.")
         self._znamky.append(znamka)
 
