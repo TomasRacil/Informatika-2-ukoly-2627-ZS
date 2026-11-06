@@ -18,10 +18,10 @@ class Kniha:
     """
 
     def __init__(self, nazev: str, autor: str, pocet_stran: int, cena: float) -> None:
-        self._nazev: str = ""
-        self._autor: str = ""
-        self._pocet_stran: int = 1
-        self._cena: float = 0.0
+        self.nazev: str = nazev
+        self.autor: str = autor
+        self.pocet_stran: int = pocet_stran
+        self.cena: float = cena
 
         # TODO: Inicializujte atributy přes property settery pro zajištění validace
         pass
@@ -35,7 +35,11 @@ class Kniha:
     def nazev(self, hodnota: str) -> None:
         # TODO: Ověřte, že hodnota je neprázdný řetězec po oříznutí mezer (.strip()).
         # Pokud je prázdný, vyvolejte ValueError("Název nesmí být prázdný.")
-        pass
+        hodnota = hodnota.strip()
+        
+        if hodnota == "":
+            raise ValueError("Název nesmí být prázdný.")
+        self._nazev = hodnota
 
     @property
     def autor(self) -> str:
@@ -46,7 +50,10 @@ class Kniha:
     def autor(self, hodnota: str) -> None:
         # TODO: Ověřte, že hodnota je neprázdný řetězec po oříznutí mezer (.strip()).
         # Pokud je prázdný, vyvolejte ValueError("Autor nesmí být prázdný.")
-        pass
+        hodnota = hodnota.strip()
+        if hodnota == "":
+            raise ValueError("Autor nesmí být prázdný.")
+        self._autor = hodnota
 
     @property
     def pocet_stran(self) -> int:
@@ -57,7 +64,10 @@ class Kniha:
     def pocet_stran(self, hodnota: int) -> None:
         # TODO: Ověřte, že hodnota je > 0.
         # Pokud ne, vyvolejte ValueError("Počet stran musí být kladné číslo.")
-        pass
+        if hodnota > 0:
+            self._pocet_stran = hodnota
+        else:
+            raise ValueError("Počet stran musí být kladné číslo.")
 
     @property
     def cena(self) -> float:
@@ -68,7 +78,11 @@ class Kniha:
     def cena(self, hodnota: float) -> None:
         # TODO: Ověřte, že hodnota je >= 0.
         # Pokud ne, vyvolejte ValueError("Cena nesmí být záporná.")
-        pass
+        if hodnota >=0:
+            self._cena = hodnota
+        else:
+            raise ValueError("Cena nesmí být záporná.")
+
 
     def sleva(self, procento: float) -> None:
         """
@@ -77,7 +91,12 @@ class Kniha:
         Pokud procento není v rozsahu 0 až 100, vyvolejte ValueError("Sleva musí být v rozmezí 0 až 100 %.").
         """
         # TODO: Doplňte implementaci
-        pass
+        if 0<=procento<=100:
+            self._cena = self._cena - ((self._cena/100)*procento)
+            self._cena = round(self._cena,2)
+        else:
+            raise ValueError("Sleva musí být v rozmezí 0 až 100 %.")
+        
 
     def __str__(self) -> str:
         """
@@ -102,9 +121,9 @@ class PolozkaSkladu:
 
     def __init__(self, kod: str, nazev: str, cena_za_kus: float, pocet_kusu: int = 0) -> None:
         self._kod: str = kod
-        self._nazev: str = ""
-        self._cena_za_kus: float = 0.0
-        self._pocet_kusu: int = 0
+        self.nazev: str = nazev
+        self.cena_za_kus: float = cena_za_kus
+        self.pocet_kusu: int = pocet_kusu
 
         # TODO: Inicializujte atributy přes settery s validací
         pass
@@ -122,7 +141,10 @@ class PolozkaSkladu:
     def nazev(self, hodnota: str) -> None:
         # TODO: Ověřte, že hodnota je neprázdný řetězec po oříznutí mezer.
         # Pokud je prázdný, vyvolejte ValueError("Název nesmí být prázdný.")
-        pass
+        hodnota = hodnota.strip()
+        if hodnota == "":
+            raise ValueError("Název nesmí být prázdný.")
+        self._nazev = hodnota
 
     @property
     def cena_za_kus(self) -> float:
@@ -132,7 +154,9 @@ class PolozkaSkladu:
     def cena_za_kus(self, hodnota: float) -> None:
         # TODO: Ověřte, že cena je >= 0.
         # Pokud ne, vyvolejte ValueError("Cena za kus nesmí být záporná.")
-        pass
+        if hodnota<0:
+            raise ValueError("Cena za kus nesmí být záporná.")
+        self._cena_za_kus = hodnota
 
     @property
     def pocet_kusu(self) -> int:
@@ -142,7 +166,12 @@ class PolozkaSkladu:
     def pocet_kusu(self, hodnota: int) -> None:
         # TODO: Ověřte, že počet kusů je >= 0.
         # Pokud ne, vyvolejte ValueError("Počet kusů nesmí být záporný.")
-        pass
+
+        if hodnota<0:
+            raise ValueError("Počet kusů nesmí být záporný.")
+        else:
+            self._pocet_kusu = hodnota
+        
 
     @property
     def hodnota_zasob(self) -> float:
@@ -151,7 +180,8 @@ class PolozkaSkladu:
         Zaokrouhlete na 2 desetinná místa.
         """
         # TODO: Doplňte výpočet
-        return 0.0
+        hodnota = round(self._pocet_kusu*self._cena_za_kus,2)
+        return hodnota
 
     def prijem(self, pocet: int) -> None:
         """
@@ -159,7 +189,10 @@ class PolozkaSkladu:
         Pokud je pocet <= 0, vyvolejte ValueError("Počet kusů pro příjem musí být kladný.").
         """
         # TODO: Doplňte implementaci
-        pass
+        if pocet<=0:
+            raise ValueError("Počet kusů pro příjem musí být kladný.")
+        else:
+            self._pocet_kusu+=pocet
 
     def vydej(self, pocet: int) -> bool:
         """
@@ -169,7 +202,13 @@ class PolozkaSkladu:
         Pokud dostatek kusů není, počet kusů se nezmění a metoda vrátí False.
         """
         # TODO: Doplňte implementaci
-        return False
+        if 0>=pocet:
+            raise ValueError("Počet kusů pro výdej musí být kladný.")
+        elif self._pocet_kusu>=pocet:
+            self._pocet_kusu-=pocet
+            return True
+        elif self._pocet_kusu<pocet:
+            return False
 
 
 class Student:
@@ -183,12 +222,11 @@ class Student:
     """
 
     def __init__(self, jmeno: str, rocnik: int) -> None:
-        self._jmeno: str = ""
-        self._rocnik: int = 1
+        self.jmeno: str = jmeno
+        self.rocnik: int = rocnik
         self._znamky: list[int] = []
 
         # TODO: Inicializujte jmeno a rocnik přes property settery
-        pass
 
     @property
     def jmeno(self) -> str:
@@ -198,7 +236,10 @@ class Student:
     def jmeno(self, hodnota: str) -> None:
         # TODO: Ověřte, že jméno je neprázdný řetězec po oříznutí mezer.
         # Pokud je prázdný, vyvolejte ValueError("Jméno studenta nesmí být prázdné.")
-        pass
+        hodnota = hodnota.strip()
+        if hodnota == "":
+            raise ValueError("Jméno studenta nesmí být prázdné.")
+        self._jmeno = hodnota
 
     @property
     def rocnik(self) -> int:
@@ -208,7 +249,10 @@ class Student:
     def rocnik(self, hodnota: int) -> None:
         # TODO: Ověřte, že ročník je v rozsahu 1 až 5 (včetně).
         # Pokud ne, vyvolejte ValueError("Neplatný ročník (povolené hodnoty 1-5).")
-        pass
+        if 1>hodnota or hodnota>5:
+            raise ValueError("Neplatný ročník (povolené hodnoty 1-5).")
+        self._rocnik = hodnota
+
 
     @property
     def znamky(self) -> list[int]:
@@ -225,7 +269,10 @@ class Student:
         Pokud hodnota není v rozsahu 1 až 5, vyvolejte ValueError("Známka musí být v rozsahu 1 až 5.").
         """
         # TODO: Doplňte validaci a přidání známky
-        pass
+        if znamka<1 or znamka>5:
+            raise ValueError("Známka musí být v rozsahu 1 až 5.")
+        else:
+            self._znamky.append(znamka)
 
     @property
     def prumer(self) -> float:
@@ -234,7 +281,13 @@ class Student:
         Pokud student nemá žádné známky, vrátí 0.0.
         """
         # TODO: Doplňte výpočet průměru
-        return 0.0
+        celkem:float = 0
+        for znamka in self._znamky:
+            celkem+=znamka
+        if celkem == 0:
+            return 0.0
+        else:
+            return celkem/len(self._znamky)
 
     @property
     def prospel(self) -> bool:
@@ -246,4 +299,13 @@ class Student:
         - Jinak (průměr > 3.0) vrátí False.
         """
         # TODO: Doplňte logiku prospěchu
-        return True
+        prospel:bool = True
+
+        for i in self._znamky:
+            if i == 5:
+                prospel = False
+
+        if self.prumer<=3.0 and prospel:
+            return True
+        elif self.prumer>3.0 or prospel:
+            return False

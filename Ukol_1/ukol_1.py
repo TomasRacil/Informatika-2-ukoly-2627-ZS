@@ -15,7 +15,13 @@ def vypocet_bmi(vaha_kg: float, vyska_m: float) -> float:
     Pokud je váha <= 0 nebo výška <= 0, vraťte 0.0.
     """
     # TODO: Doplňte výpočet BMI se zaokrouhlením na 2 desetinná místa
-    return 0.0
+    if vaha_kg <= 0:
+        return 0.0
+    elif vyska_m  <= 0.0:
+        return 0.0 
+    BMI:float = vaha_kg / (vyska_m ** 2)
+    BMI = round(BMI, 2)
+    return BMI
 
 
 def kategorie_bmi(bmi: float) -> str:
@@ -29,7 +35,18 @@ def kategorie_bmi(bmi: float) -> str:
     Pokud je bmi <= 0, vraťte "neplatna hodnota".
     """
     # TODO: Doplňte větvení if-elif-else
-    return ""
+    if 0 < bmi < 18.5:
+        return "podvaha"
+    elif 18.5 <= bmi < 25:
+        return "normalni"
+    elif 25.0 <= bmi < 30.0:
+        return "nadvaha"
+    elif bmi >= 30.0:
+        return "obezita"
+    elif bmi<= 0:
+        return "neplatna hodnota"
+    else:
+        return ""
 
 
 def soucet_sudych(start: int, stop: int) -> int:
@@ -45,7 +62,17 @@ def soucet_sudych(start: int, stop: int) -> int:
     Pokud je start > stop, vraťte 0.
     """
     # TODO: Doplňte cyklus for s funkcí range()
-    return 0
+    if start<=stop:
+        suda:int = []
+        for i in range(start,stop+1):
+            if i % 2 == 0:
+                suda.append(i)
+        celkem:int = 0
+        for j in suda:
+            celkem+=j
+        return celkem
+    elif start>stop:
+        return 0
 
 
 def pocet_kroku_collatz(n: int) -> int:
@@ -62,7 +89,17 @@ def pocet_kroku_collatz(n: int) -> int:
         6 -> 3 -> 10 -> 5 -> 16 -> 8 -> 4 -> 2 -> 1 (celkem 8 kroků)
     """
     # TODO: Doplňte cyklus while a počítadlo kroků
-    return 0
+    if n>0:
+        count:int = 0
+        while n != 1:
+            if n %2 == 0:
+                n=n//2
+            else:
+                n = 3*n + 1
+            count+=1
+        return count
+    else:
+        return 0
 
 
 def main():
