@@ -35,7 +35,12 @@ def over_kod_zasilky(kod: str) -> dict[str, str]:
     Pokud kód odpovídá, vraťte slovník:
         {"zeme": m.group(1), "cislo": m.group(2), "typ": m.group(3)}
     """
-    pass
+    m=re.match(r"^([A-Z]{2})-(\d{6})-([A-Z]{3})$", kod)
+    if m:
+        return {"zeme": m.group(1), "cislo": m.group(2), "typ": m.group(3)}
+    else:
+        raise NeplatnyKodZasilkyError("Neplatný formát kódu zásilky.")
+        return None
 
 
 def over_kladne_argumenty(func: Callable[..., Any]) -> Callable[..., Any]:
@@ -53,7 +58,18 @@ def over_kladne_argumenty(func: Callable[..., Any]) -> Callable[..., Any]:
 
     Na vnořenou funkci použijte @functools.wraps(func).
     """
-    pass
+    @functools.wraps(func)
+    def wrapper(*args,**kwargs):
+        for arg in args:
+            if (isinstance(arg, (int, float)) and not isinstance(arg, bool)):
+                if arg <=0:
+                    raise ValueError("Číselný argument musí být kladný.")
+        for arg in kwargs.values():
+            if (isinstance(arg, (int, float)) and not isinstance(arg,bool)):
+                if arg <= 0:
+                    raise ValueError("Číselný argument musí být kladný.")
+        return func(*args,**kwargs)
+    return wrapper
 
 
 class Zasilka(ABC):
@@ -76,7 +92,15 @@ class Zasilka(ABC):
 
         Uložte self.kod = kod.strip() a self.hmotnost_kg = float(hmotnost_kg).
         """
-        pass
+        
+        if kod.strip() == "":
+            raise ValueError("Kód zásilky nesmí být prázdný.")
+        else:
+            self.kod = kod.strip()
+        if hmotnost_kg <=0:
+            raise ValueError("Hmotnost musí být kladná.")
+        else:
+            self.hmotnost_kg = float(hmotnost_kg)
 
     @abstractmethod
     def spocitej_cenu(self) -> float:
@@ -89,7 +113,7 @@ class Zasilka(ABC):
         "Zásilka {kod} [{cena:.2f} Kč]"
         Například: "Zásilka CZ-123456-STD [97.50 Kč]"
         """
-        pass
+        return f"Zásilka {self.kod} [{self.spocitej_cenu():.2f} Kč]"
 
     def __repr__(self) -> str:
         """
@@ -97,7 +121,7 @@ class Zasilka(ABC):
         f"{self.__class__.__name__}(kod='{self.kod}', hmotnost_kg={self.hmotnost_kg})"
         Například: "StandardniZasilka(kod='CZ-123456-STD', hmotnost_kg=2.5)"
         """
-        pass
+        return f"{self.__class__.__name__}(kod='{self.kod}', hmotnost_kg={self.hmotnost_kg})"
 
     def __eq__(self, other: object) -> bool:
         """
@@ -105,21 +129,30 @@ class Zasilka(ABC):
         konkrétní třídu (self.__class__ == other.__class__) a stejný kód.
         V opačném případě vraťte False.
         """
-        pass
+        if isinstance(other, Zasilka) and self.__class__ == other.__class__ and self.kod == other.kod:
+            return True
+        else:
+            return False
 
     def __lt__(self, other: object) -> bool:
         """
         Porovná ceny: vraťte self.spocitej_cenu() < other.spocitej_cenu(),
         pokud je other instance Zasilka. Jinak vraťte NotImplemented.
         """
-        pass
+        if isinstance(other, Zasilka):
+            return self.spocitej_cenu()<other.spocitej_cenu()
+        else:
+            return NotImplemented
 
     def __add__(self, other: object) -> float:
         """
         Vrátí součet cen obou zásilek, pokud je other instance Zasilka.
         Jinak vraťte NotImplemented.
         """
-        pass
+        if isinstance(other, Zasilka):
+            return self.spocitej_cenu()+other.spocitej_cenu()
+        else:
+            return NotImplemented
 
 
 class StandardniZasilka(Zasilka):
@@ -127,12 +160,12 @@ class StandardniZasilka(Zasilka):
 
     def __init__(self, kod: str, hmotnost_kg: float) -> None:
         """Zavolá super().__init__(kod, hmotnost_kg)."""
-        pass
+        super().__init__(kod,hmotnost_kg)
+        
 
     def spocitej_cenu(self) -> float:
         """Vrátí round(60.0 + self.hmotnost_kg * 15.0, 2)."""
-        pass
-
+        return round(60.0 + self.hmotnost_kg * 15.0, 2)
 
 class ExpresniZasilka(Zasilka):
     """Expresní zásilka: 60 Kč základ + 25 Kč za každý kilogram + příplatek."""
@@ -143,11 +176,15 @@ class ExpresniZasilka(Zasilka):
         Pokud je priplatek < 0, vyvolejte ValueError("Příplatek nesmí být záporný.").
         Uložte self.priplatek = float(priplatek).
         """
-        pass
+        super().__init__(kod, hmotnost_kg)
+        if priplatek<0:
+            raise ValueError("Příplatek nesmí být záporný.")
+        else:
+            self.priplatek=float(priplatek)
 
     def spocitej_cenu(self) -> float:
         """Vrátí round((60.0 + self.hmotnost_kg * 25.0) + self.priplatek, 2)."""
-        pass
+        return round((60.0 + self.hmotnost_kg * 25.0) + self.priplatek, 2)
 
 
 def vytvor_parser() -> argparse.ArgumentParser:
@@ -162,8 +199,13 @@ def vytvor_parser() -> argparse.ArgumentParser:
     Volitelný "--priplatek"/"-p": type=float, default=100.0,
         help="Expresní příplatek"
     """
-    pass
-
+    parser = argparse.ArgumentParser(description="Systém pro kalkulaci a správu zásilek")
+    parser.add_argument("kod", type=str, help="Kód zásilky")
+    parser.add_argument("hmotnost", type=float, help="Hmotnost zásilky v kg")
+    parser.add_argument("--typ", "-t", type=str, choices=["standard", "expres"], default="standard", help = "Typ zásilky")
+    parser.add_argument("--priplatek", "-p", type=float, default=100.0, help="Expresní příplatek")
+    #args = parser.parse_args()
+    return parser
 
 def vytvor_zasilku_z_argumentu(args: argparse.Namespace) -> Zasilka:
     """
@@ -173,7 +215,11 @@ def vytvor_zasilku_z_argumentu(args: argparse.Namespace) -> Zasilka:
     Pro "expres" vraťte
     ExpresniZasilka(args.kod, args.hmotnost, priplatek=args.priplatek).
     """
-    pass
+    if args.typ == "standard":
+        return StandardniZasilka(args.kod, args.hmotnost)
+    if args.typ == "expres":
+        return ExpresniZasilka(args.kod, args.hmotnost, priplatek = args.priplatek)
+
 
 
 if __name__ == "__main__":

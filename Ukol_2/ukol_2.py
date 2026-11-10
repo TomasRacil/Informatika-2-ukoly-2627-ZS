@@ -24,7 +24,15 @@ def extrahuj_hashtagy(text: str) -> set[str]:
         extrahuj_hashtagy(text) -> {"python", "datové_struktury", "super"}
     """
     # TODO: Doplňte implementaci
-    return set()
+    vysledek = set()
+    text = text.split()
+    for i in text:
+        if i.startswith('#'):
+            i = i.lstrip("#").strip(',.!?:; "')
+            i = i.lower()
+            if i:
+                vysledek.add(i)
+    return vysledek
 
 
 def porovnej_zajmy(student_a: set[str], student_b: set[str]) -> tuple[set[str], set[str], set[str]]:
@@ -43,7 +51,11 @@ def porovnej_zajmy(student_a: set[str], student_b: set[str]) -> tuple[set[str], 
         porovnej_zajmy(a, b) -> ({"python"}, {"c++", "linux"}, {"sql", "git"})
     """
     # TODO: Doplňte implementaci
-    return (set(), set(), set())
+    spolecne = student_a & student_b
+    pouze_a = student_a - student_b
+    pouze_b = student_b - student_a
+
+    return (spolecne, pouze_a, pouze_b)
 
 
 def katalog_knih(knihy: list[tuple[str, str, int]]) -> dict[str, list[str]]:
@@ -68,7 +80,15 @@ def katalog_knih(knihy: list[tuple[str, str, int]]) -> dict[str, list[str]]:
         katalog_knih(katalog) -> {"Sci-Fi": ["1984", "Duna"], "Fantasy": ["Pán prstenů"]}
     """
     # TODO: Doplňte implementaci
-    return {}
+    katalog = {}
+    for kniha in knihy:
+        nazev, zanr, rok = kniha
+        zanr = zanr.strip()
+        if zanr not in katalog:
+            katalog[zanr] = []
+        katalog[zanr].append(nazev)
+
+    return katalog
 
 
 def statistika_textu(text: str) -> dict:
@@ -101,12 +121,31 @@ def statistika_textu(text: str) -> dict:
         }
     """
     # TODO: Doplňte implementaci
-    return {
-        "pocet_slov": 0,
-        "pocet_unikatnich": 0,
-        "nejdelsi_slovo": "",
-        "cetnost_delek": {}
-    }
+    slovnik = {"pocet_slov": 0,
+            "pocet_unikatnich": 0,
+            "nejdelsi_slovo": "",
+            "cetnost_delek": {}}
+    text = text.lower()
+    text = text.replace(","," ")
+    text = text.replace(".", "")
+    text = text.replace("!", "")
+    text = text.replace("?", "")
+    text = text.replace(":", "")
+    text = text.replace(";", "")
+    text = text.split()
+    slovnik["pocet_slov"]=len(text)
+    slovnik["pocet_unikatnich"] = len(set(text))
+    nejdel = ""
+    for slovo in text:
+        if len(slovo)>len(nejdel):
+            nejdel = slovo
+        if len(slovo) not in slovnik["cetnost_delek"]:
+             slovnik["cetnost_delek"][len(slovo)] = 0
+        slovnik["cetnost_delek"][len(slovo)]+=1
+
+    slovnik["nejdelsi_slovo"] = nejdel
+
+    return slovnik
 
 
 def main():
