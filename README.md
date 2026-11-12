@@ -202,7 +202,8 @@ Až vyučující během semestru zveřejní nový úkol, váš fork v něm ješt
 | [**Ukol_1**](./Ukol_1/README.md) | **Základy: proměnné, podmínky a cykly** | Výpočet BMI, klasifikace hodnot, cyklus for a Collatzova posloupnost (while) | 9. 10. 2026 | Zadáno |
 | [**Ukol_2**](./Ukol_2/README.md) | **Datové struktury: řetězce, množiny, n-tice a slovníky** | Extrakce hashtagů, množinové operace nad zájmy, katalog knih a souhrnná statistika textu | 20. 10. 2026 | Zadáno |
 | [**Ukol_3**](./Ukol_3/README.md) | **OOP: třídy, typové anotace a vlastnosti** | Zapouzdření, gettery/settery (@property), validace a metody (Kniha, PolozkaSkladu, Student) | 3. 11. 2026 | Zadáno |
-| *Ukol_4* | *Bude doplněno* | *Zadání bude zveřejněno v průběhu semestru* | – | Připravuje se |
+| [**Ukol_4**](./Ukol_4/README.md) | **Pokročilý Python: dědičnost, magické metody, dekorátory, regex a CLI** | Systém správy zásilek: vlastní výjimky, regulární výrazy, dekorátor ověřující argumenty, abstraktní třída, magické metody a argparse | 17. 11. 2026 | Zadáno |
+| *Ukol_5* | *Bude doplněno* | *Zadání bude zveřejněno v průběhu semestru* | – | Připravuje se |
 
 ---
 
