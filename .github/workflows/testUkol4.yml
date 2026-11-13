@@ -1,0 +1,31 @@
+name: Python Ukol 4 Tests
+
+on:
+  push:
+    paths:
+      - 'Ukol_4/**'
+      - '.github/workflows/testUkol4.yml'
+  pull_request:
+    paths:
+      - 'Ukol_4/**'
+      - '.github/workflows/testUkol4.yml'
+
+jobs:
+  python_test:
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'pull_request' || 
+      github.event.repository.fork == true || 
+      github.ref != 'refs/heads/master'
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Run Python test for Ukol 4
+      run: |
+        cd Ukol_4 && python -m unittest test.py
