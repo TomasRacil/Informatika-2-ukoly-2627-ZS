@@ -7,6 +7,15 @@ Neměňte názvy funkcí ani jejich parametry.
 
 
 def vypocet_bmi(vaha_kg: float, vyska_m: float) -> float:
+
+    if vaha_kg <=0.0 or vyska_m <= 0.0: 
+        BMI = 0.0
+
+    else:
+        BMI = float(vaha_kg/(vyska_m**2))
+        BMI =round(BMI, 2)
+
+    
     """
     Spočítá Body Mass Index (BMI) podle vzorce:
         BMI = vaha_kg / (vyska_m ** 2)
@@ -15,10 +24,12 @@ def vypocet_bmi(vaha_kg: float, vyska_m: float) -> float:
     Pokud je váha <= 0 nebo výška <= 0, vraťte 0.0.
     """
     # TODO: Doplňte výpočet BMI se zaokrouhlením na 2 desetinná místa
-    return 0.0
+    return BMI
 
 
 def kategorie_bmi(bmi: float) -> str:
+
+    
     """
     Na základě hodnoty BMI určí váhovou kategorii:
         - bmi < 18.5: "podvaha"
@@ -29,7 +40,18 @@ def kategorie_bmi(bmi: float) -> str:
     Pokud je bmi <= 0, vraťte "neplatna hodnota".
     """
     # TODO: Doplňte větvení if-elif-else
-    return ""
+
+    if 0<bmi<18.5:
+        return "podvaha"
+    elif 18.5 <= bmi < 25.0:
+        return "normalni"
+    elif 25.0 <= bmi < 30.0:
+        return "nadvaha"
+    elif bmi >= 30.0:
+        return "obezita"
+    elif bmi <= 0.0:
+        return "neplatna hodnota"
+
 
 
 def soucet_sudych(start: int, stop: int) -> int:
@@ -44,8 +66,16 @@ def soucet_sudych(start: int, stop: int) -> int:
 
     Pokud je start > stop, vraťte 0.
     """
+    n =int (0)
+    if start%2==1:
+        start = start+1
+    
+
+    for i in range(start,stop+1, 2):
+        n = int(n+i)
+
     # TODO: Doplňte cyklus for s funkcí range()
-    return 0
+    return n
 
 
 def pocet_kroku_collatz(n: int) -> int:
@@ -62,12 +92,27 @@ def pocet_kroku_collatz(n: int) -> int:
         6 -> 3 -> 10 -> 5 -> 16 -> 8 -> 4 -> 2 -> 1 (celkem 8 kroků)
     """
     # TODO: Doplňte cyklus while a počítadlo kroků
-    return 0
+
+    pocitadlo = int(0)
+
+    while n > 1:
+        if n%2==1:
+            n = 3* n + 1
+            pocitadlo+=1
+            
+        elif n%2==0:
+            n = n // 2
+            pocitadlo+=1
+            
+        
+
+
+    return pocitadlo
 
 
 def main():
     print("=== Testování funkcí Úkolu 1 ===")
-    vaha = 75.0
+    vaha = 0.0
     vyska = 1.80
     bmi = vypocet_bmi(vaha, vyska)
     print(f"1. BMI ({vaha} kg, {vyska} m): {bmi}")
