@@ -1,6 +1,14 @@
-﻿name: Python Ukol 0 Tests
+name: Python Ukol 0 Tests
 
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - 'Ukol_0/**'
+      - '.github/workflows/testUkol0.yml'
+  pull_request:
+    paths:
+      - 'Ukol_0/**'
+      - '.github/workflows/testUkol0.yml'
 
 jobs:
   python_test:
